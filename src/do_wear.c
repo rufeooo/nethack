@@ -52,6 +52,16 @@ struct obj *otmp;
         You("were wearing %s.", doname(otmp));
 }
 
+/* for items that delay */
+STATIC_OVL void
+to_be_on_msg(otmp)
+struct obj *otmp;
+{
+    if (flags.verbose) {
+        You("prepare to wear %s.", doname(otmp));
+    }
+}
+
 /* for items that involve no delay */
 STATIC_OVL void
 on_msg(otmp)
@@ -59,15 +69,12 @@ struct obj *otmp;
 {
     if (flags.verbose) {
         char how[BUFSZ];
-        /* call xname() before obj_is_pname(); formatting obj's name
-           might set obj->dknown and that affects the pname test */
-        const char *otmp_name = xname(otmp);
 
         how[0] = '\0';
         if (otmp->otyp == TOWEL)
             Sprintf(how, " around your %s", body_part(HEAD));
         You("are now wearing %s%s.",
-            obj_is_pname(otmp) ? the(otmp_name) : an(otmp_name), how);
+            doname(otmp), how);
     }
 }
 
@@ -1911,6 +1918,7 @@ struct obj *obj;
 
     if (armor) {
         int delay;
+	char buf[BUFSZ];
 
         obj->known = 1; /* since AC is shown on the status line */
         /* if the armor is wielded, release it for wearing */
@@ -1930,6 +1938,7 @@ struct obj *obj;
             if (obj == uarm)
                 afternmv = Armor_on;
             nomovemsg = "You finish your dressing maneuver.";
+	    to_be_on_msg(obj);
         } else {
             if (is_cloak(obj))
                 (void) Cloak_on();
