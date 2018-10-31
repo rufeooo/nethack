@@ -36,6 +36,12 @@ get_strength_str()
     return buf;
 }
 
+STATIC_OVL char*
+exerstr(int i)
+{
+  return i == 0 ? "_" : sgn(i) == -1? "-" : "+";
+}
+
 char *
 do_statusline1()
 {
@@ -70,9 +76,12 @@ do_statusline1()
     if ((i - j) > 0)
         Sprintf(nb = eos(nb), "%*s", i - j, " "); /* pad with spaces */
 
-    Sprintf(nb = eos(nb), "St:%s Dx:%-1d Co:%-1d In:%-1d Wi:%-1d Ch:%-1d",
-            get_strength_str(),
-            ACURR(A_DEX), ACURR(A_CON), ACURR(A_INT), ACURR(A_WIS),
+    Sprintf(nb = eos(nb), "St:%s%s Dx:%-1d%s Co:%-1d%s In:%-1d%s Wi:%-1d%s Ch:%-1d",
+            get_strength_str(), exerstr(AEXE(A_STR)),
+            ACURR(A_DEX), exerstr(AEXE(A_DEX)),
+            ACURR(A_CON), exerstr(AEXE(A_CON)),
+            ACURR(A_INT), exerstr(AEXE(A_INT)),
+            ACURR(A_WIS), exerstr(AEXE(A_WIS)),
             ACURR(A_CHA));
     Sprintf(nb = eos(nb),
             (u.ualign.type == A_CHAOTIC)
