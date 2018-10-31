@@ -2708,15 +2708,17 @@ boolean put_in;
     boolean all_categories = TRUE, loot_everything = FALSE;
     char buf[BUFSZ];
     const char *action = put_in ? "Put in" : "Take out";
-    struct obj *otmp, *otmp2;
+    struct obj *otmp, *otmp2, *curr;
     menu_item *pick_list;
     int mflags, res;
     long count;
 
-    if (retry) {
-        all_categories = (retry == -2);
-    } else if (flags.menu_style == MENU_FULL) {
-        all_categories = FALSE;
+    for (n = 0, curr = put_in ? invent : current_container->cobj; curr; curr = curr->nobj) {
+      ++n;
+    }
+    all_categories = n < 10 || (retry == -2);
+
+    if (!all_categories && flags.menu_style == MENU_FULL) {
         Sprintf(buf, "%s what type of objects?", action);
         mflags = (ALL_TYPES | UNPAID_TYPES | BUCX_TYPES);
         if (put_in)
