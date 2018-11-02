@@ -189,6 +189,8 @@ do_statusline2()
         Sprintf(nb = eos(nb), " %s", hu_stat[u.uhs]);
     if ((cap = near_capacity()) > UNENCUMBERED)
         Sprintf(nb = eos(nb), " %s", enc_stat[cap]);
+    if (count_enhance())
+        Sprintf(nb = eos(nb), " Enhance");
     if (Blind)
         Strcpy(nb = eos(nb), " Blind");
     if (Deaf)

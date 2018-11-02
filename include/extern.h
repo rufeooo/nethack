@@ -2707,6 +2707,7 @@ E int NDECL(dbon);
 E void FDECL(wet_a_towel, (struct obj *, int, BOOLEAN_P));
 E void FDECL(dry_a_towel, (struct obj *, int, BOOLEAN_P));
 E int NDECL(enhance_weapon_skill);
+E int NDECL(count_enhance);
 E void FDECL(unrestrict_weapon_skill, (int));
 E void FDECL(use_skill, (int, int));
 E void FDECL(add_weapon_skill, (int));

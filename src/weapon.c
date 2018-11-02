@@ -999,6 +999,19 @@ static const struct skill_range {
     { P_FIRST_SPELL, P_LAST_SPELL, "Spellcasting Skills" },
 };
 
+int
+count_enhance()
+{
+	int count = 0;
+	for (int i = 0; i < P_NUM_SKILLS; i++) {
+	    if (P_RESTRICTED(i))
+		continue;
+	    if (can_advance(i, FALSE))
+		count++;
+	}
+	return count;
+}
+
 /*
  * The `#enhance' extended command.  What we _really_ would like is
  * to keep being able to pick things to advance until we couldn't any
