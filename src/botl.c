@@ -492,6 +492,11 @@ STATIC_DCL struct istat_s initblstats[MAXBLSTATS] = {
     INIT_BLSTAT("intelligence", " In:%s", ANY_INT, 10, BL_IN),
     INIT_BLSTAT("wisdom", " Wi:%s", ANY_INT, 10, BL_WI),
     INIT_BLSTAT("charisma", " Ch:%s", ANY_INT, 10, BL_CH),
+    INIT_BLSTAT("exercise_strength", "%s", ANY_STR, 2, BL_ESTR),
+    INIT_BLSTAT("exercise_dexterity", "%s", ANY_STR, 2, BL_EDX),
+    INIT_BLSTAT("exercise_consitution", "%s", ANY_STR, 2, BL_ECO),
+    INIT_BLSTAT("exercise_intelligence", "%s", ANY_STR, 2, BL_EIN),
+    INIT_BLSTAT("exercise_wisdom", "%s", ANY_STR, 2, BL_EWI),
     INIT_BLSTAT("alignment", " %s", ANY_STR, 40, BL_ALIGN),
     INIT_BLSTAT("score", " S:%s", ANY_LONG, 20, BL_SCORE),
     INIT_BLSTAT("carrying-capacity", " %s", ANY_LONG, 20, BL_CAP),
@@ -578,6 +583,12 @@ bot_via_windowport()
     blstats[idx][BL_IN].a.a_int = ACURR(A_INT);
     blstats[idx][BL_WI].a.a_int = ACURR(A_WIS);
     blstats[idx][BL_CH].a.a_int = ACURR(A_CHA);
+
+    Strcpy(blstats[idx][BL_ESTR].val, exerstr(AEXE(A_STR)));
+    Strcpy(blstats[idx][BL_EDX].val, exerstr(AEXE(A_DEX)));
+    Strcpy(blstats[idx][BL_ECO].val, exerstr(AEXE(A_CON)));
+    Strcpy(blstats[idx][BL_EIN].val, exerstr(AEXE(A_INT)));
+    Strcpy(blstats[idx][BL_EWI].val, exerstr(AEXE(A_WIS)));
 
     /* Alignment */
     Strcpy(blstats[idx][BL_ALIGN].val, (u.ualign.type == A_CHAOTIC)
@@ -671,6 +682,9 @@ bot_via_windowport()
         blstats[idx][BL_CONDITION].a.a_ulong |= BL_MASK_FOODPOIS;
     if (Sick && (u.usick_type & SICK_NONVOMITABLE) != 0)
         blstats[idx][BL_CONDITION].a.a_ulong |= BL_MASK_TERMILL;
+    /* Available enhancement */
+    if (count_enhance())
+       blstats[idx][BL_CONDITION].a.a_ulong |= BL_MASK_ENHANCE;
     /*
      * basic formatting puts hunger status and encumbrance here
      */

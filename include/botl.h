@@ -31,7 +31,8 @@ enum statusfields {
     BL_CHARACTERISTICS = -2, /* alias for BL_STR..BL_CH */
     BL_FLUSH = -1, BL_TITLE = 0,
     BL_STR, BL_DX, BL_CO, BL_IN, BL_WI, BL_CH,  /* 1..6 */
-    BL_ALIGN, BL_SCORE, BL_CAP, BL_GOLD, BL_ENE, BL_ENEMAX, /* 7..12 */
+    BL_ESTR, BL_EDX, BL_ECO, BL_EIN, BL_EWI, // TODO
+    BL_ALIGN, BL_SCORE, BL_CAP, BL_GOLD, BL_ENE, BL_ENEMAX, /* 8..12 */
     BL_XP, BL_AC, BL_HD, BL_TIME, BL_HUNGER, BL_HP, BL_HPMAX, BL_LEVELDESC, /* 13..20 */
     BL_EXP, BL_CONDITION
 };
@@ -59,6 +60,7 @@ enum relationships { LT_VALUE = -1, EQ_VALUE, GT_VALUE, TXT_VALUE };
 #define BL_MASK_LEV             0x00000400L
 #define BL_MASK_FLY             0x00000800L
 #define BL_MASK_RIDE            0x00001000L
+#define BL_MASK_ENHANCE         0x00002000L
 /* clang-format on */
 
 #define REASSESS_ONLY TRUE

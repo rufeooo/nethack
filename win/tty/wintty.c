@@ -3494,6 +3494,7 @@ tty_status_init()
  *              BL_MASK_LEV             0x00000400L
  *              BL_MASK_FLY             0x00000800L
  *              BL_MASK_RIDE            0x00001000L
+ *              BL_MASK_ENHANCE         0x00002000L
  *      -- The value passed for BL_GOLD includes an encoded leading
  *         symbol for GOLD "\GXXXXNNNN:nnn". If the window port needs to use
  *         the textual gold amount without the leading "$:" the port will
@@ -3595,9 +3596,14 @@ unsigned long *colormasks;
     char *text = (char *) ptr;
     static boolean oncearound = FALSE; /* prevent premature partial display */
     enum statusfields fieldorder[2][15] = {
-        { BL_TITLE, BL_STR, BL_DX, BL_CO, BL_IN, BL_WI, BL_CH, BL_ALIGN,
-          BL_SCORE, BL_FLUSH, BL_FLUSH, BL_FLUSH, BL_FLUSH, BL_FLUSH,
-          BL_FLUSH },
+        { BL_TITLE, 
+          BL_STR, BL_ESTR, 
+          BL_DX, BL_EDX,
+          BL_CO, BL_ECO,
+          BL_IN, BL_EIN,
+          BL_WI, BL_EWI,
+          BL_CH, BL_ALIGN,
+          BL_SCORE, BL_FLUSH},
         { BL_LEVELDESC, BL_GOLD, BL_HP, BL_HPMAX, BL_ENE, BL_ENEMAX,
           BL_AC, BL_XP, BL_EXP, BL_HD, BL_TIME, BL_HUNGER,
           BL_CAP, BL_CONDITION, BL_FLUSH }
@@ -3761,6 +3767,7 @@ unsigned long *colormasks;
                 MaybeDisplayCond(BL_MASK_STRNGL, "Strngl");
                 MaybeDisplayCond(BL_MASK_FOODPOIS, "FoodPois");
                 MaybeDisplayCond(BL_MASK_TERMILL, "TermIll");
+                MaybeDisplayCond(BL_MASK_ENHANCE, "Enhance");
                 MaybeDisplayCond(BL_MASK_BLIND, "Blind");
                 MaybeDisplayCond(BL_MASK_DEAF, "Deaf");
                 MaybeDisplayCond(BL_MASK_STUN, "Stun");
