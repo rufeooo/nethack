@@ -78,6 +78,7 @@ extern int NDECL(dodiscovered);       /**/
 extern int NDECL(doclassdisco);       /**/
 extern int NDECL(doset);              /**/
 extern int NDECL(dotogglepickup);     /**/
+extern int NDECL(dotoggleautosearch); /**/
 extern int NDECL(dowhatis);           /**/
 extern int NDECL(doquickwhatis);      /**/
 extern int NDECL(dowhatdoes);         /**/
@@ -191,6 +192,7 @@ STATIC_DCL char FDECL(there_cmd_menu, (BOOLEAN_P, int, int));
 STATIC_DCL char *NDECL(parse);
 STATIC_DCL void FDECL(show_direction_keys, (winid, CHAR_P, BOOLEAN_P));
 STATIC_DCL boolean FDECL(help_dir, (CHAR_P, int, const char *));
+static char in_line[COLNO];
 
 STATIC_PTR int
 doprev_message(VOID_ARGS)
@@ -2891,6 +2893,8 @@ struct ext_func_tab extcmdlist[] = {
             doattributes, IFBURIED },
     { '@', "autopickup", "toggle the pickup option on/off",
             dotogglepickup, IFBURIED },
+    { '%', "autosearch", "toggle automatic search on/off",
+            dotoggleautosearch, IFBURIED },
     { 'C', "call", "call (name) something", docallcmd, IFBURIED },
     { 'Z', "cast", "zap (cast) a spell", docast, IFBURIED },
     { M('c'), "chat", "talk to someone", dotalk, IFBURIED | AUTOCOMPLETE },
@@ -4231,8 +4235,16 @@ register char *cmd;
     }
 
     if (do_walk) {
-        if (multi)
+        if (multi) {
             context.mv = TRUE;
+        }
+        else if (flags.autosearch) {
+            multi = 1;
+            in_line[0] = cmd_from_func(dosearch);
+            in_line[1] = 0;
+            save_cm = in_line;
+        }
+
         domove();
         context.forcefight = 0;
         return;
@@ -5130,11 +5142,6 @@ boolean historical; /* whether to include in message history: True => yes */
 STATIC_OVL char *
 parse()
 {
-#ifdef LINT /* static char in_line[COLNO]; */
-    char in_line[COLNO];
-#else
-    static char in_line[COLNO];
-#endif
     register int foo;
     boolean prezero = FALSE;
 
