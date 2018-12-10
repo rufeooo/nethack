@@ -28,6 +28,9 @@ core
 # CVS default ignores end
 .*.swp
 
+# recordings
+*.rec
+
 # We generate makefiles by shell script
 Makefile
 
@@ -51,4 +54,3 @@ Makefile.gcc-orig
 # VS2013 extension to auto-whine about questionable code generates these
 *.lastcodeanalysissucceeded
 # Win32-specific ignores end
-
